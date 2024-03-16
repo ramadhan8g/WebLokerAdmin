@@ -6,6 +6,7 @@ import prisma from "../../../../../lib/prisma";
 import NextAuth from "next-auth/next";
 
 
+
 export const authOptions: NextAuthOptions = {
 	secret: process.env.NEXTAUTH_SECRET,
 	providers: [
@@ -22,13 +23,13 @@ export const authOptions: NextAuthOptions = {
 				},
 			},
 			async authorize(credentials, req) {
+				// ambil data 1 
 				const user = await prisma.company.findFirst({
-                    // ambil data 1 
 					where: {
 						email: credentials?.email,
 					},
 				});
-				console.log(user)
+				
 
 				if (!user) {
 					return null;
@@ -52,7 +53,6 @@ export const authOptions: NextAuthOptions = {
 		newUser: "/auth/signup",
 	},
 	callbacks: {
-        // utk nambahi id karena d next auth hnya nyimpan email dan nama
 		jwt({ token, account, user }) {
 			if (account) {
 				token.id = user.id;
@@ -62,10 +62,9 @@ export const authOptions: NextAuthOptions = {
 		},
 		async session({ session, token, user }) {
 			session.user.id = token.id;
-			console.log(session)
+
 			return session;
 		},
-	
 	},
 };
 
