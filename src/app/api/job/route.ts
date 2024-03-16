@@ -7,6 +7,8 @@ export async function POST(request: Request) {
 	const result = await prisma.job.create({
 		data,
 	});
+
+	// console.log(result)
 	
 	return NextResponse.json(result);
 }
